@@ -1,0 +1,6 @@
+Revision history for Perl extension Acme::SZaru.
+
+0.01  Sat Nov 20 02:48:03 2010
+	- original version; created by h2xs 1.23 with options
+		-A -b 5.10.1 -n Acme::SZaru
+

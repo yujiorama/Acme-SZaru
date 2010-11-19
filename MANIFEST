@@ -1,0 +1,8 @@
+Changes
+Makefile.PL
+MANIFEST
+ppport.h
+README
+SZaru.xs
+t/Acme-SZaru.t
+lib/Acme/SZaru.pm
