@@ -5,4 +5,6 @@ ppport.h
 README
 SZaru.xs
 t/Acme-SZaru.t
+t/10top.t
 lib/Acme/SZaru.pm
+lib/Acme/typemap
