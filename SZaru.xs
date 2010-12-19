@@ -67,6 +67,28 @@ public:
   }
 };
 
+class UniqueEstimator {
+private:
+  SZaru::UniqueEstimator *impl_;
+  
+public:
+  UniqueEstimator(int32_t max_elems) :
+      impl_(SZaru::UniqueEstimator::Create(max_elems)) {
+  }
+
+  ~UniqueEstimator() {
+    delete impl_;
+  }
+  
+  void add_elem(const char *elem) {
+    impl_->AddElem(string(elem));
+  }
+
+  uint64_t estimate_impl() {
+    return impl_->Estimate();
+  }
+};
+
 MODULE = Acme::SZaru		PACKAGE = Acme::SZaru::TopEstimator
 
 PROTOTYPES: ENABLE
@@ -134,5 +156,27 @@ PPCODE:
     }
 
     ST(0) = sv_2mortal(newRV_inc((SV*)ar));
+    XSRETURN(1);
+}
+
+MODULE = Acme::SZaru		PACKAGE = Acme::SZaru::UniqueEstimator
+
+PROTOTYPES: ENABLE
+
+UniqueEstimator *
+UniqueEstimator::new(int max_elems)
+
+void
+UniqueEstimator::DESTROY()
+
+void
+UniqueEstimator::add_elem(const char* name)
+
+SV*
+UniqueEstimator::estimate()
+PPCODE:
+{
+    uint64_t unique = THIS->estimate_impl();
+    ST(0) = newSVuv(unique);
     XSRETURN(1);
 }
