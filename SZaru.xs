@@ -129,7 +129,7 @@ PPCODE:
     THIS->estimate_impl(e);
     std::vector<int32_t>::iterator it = e.begin();
     while (it != e.end()) {
-        av_push(ar, newRV_inc(newSVuv(*it)));
+        av_push(ar, newSVuv(*it));
         it++;
     }
 
