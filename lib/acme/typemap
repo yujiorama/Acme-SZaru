@@ -1,7 +1,9 @@
 TYPEMAP
 TopEstimator * O_OBJECT
 int32_t        T_IV
+int64_t        T_IV
 QuantileEstimator * O_OBJECT
+UniqueEstimator * O_OBJECT
 
 OUTPUT
 O_OBJECT

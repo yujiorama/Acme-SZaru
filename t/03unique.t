@@ -10,7 +10,6 @@ my $estimate;
 {
     $sut = Acme::SZaru::UniqueEstimator->new(10);
     $estimate = $sut->estimate();
-    is(ref($estimate), "SCALAR", "return 0 if no addtion exists");
     is($estimate, 0, "return 0 if no addtion exists");
     $estimate = undef;
 }
@@ -19,7 +18,6 @@ my $estimate;
     $sut = Acme::SZaru::UniqueEstimator->new(0);
     $sut->add_elem("test");
     $estimate = $sut->estimate();
-    is(ref($estimate), "SCALAR", "return 0 if max_elems is 0");
     is($estimate, 0, "return 0 if max_elems is 0");
     $estimate = undef;
 }
@@ -29,7 +27,6 @@ my $estimate;
     $sut->add_elem("test".$_) foreach ((0..4));
     $estimate = $sut->estimate();
     my @expected  = (0,0,1,1,2,2,3,3,4,4);
-    is(ref($estimate), "SCALAR", "return exact number when the number of elements is smaller than max_elems");
     is($estimate, 5, "return exact number when the number of elements is smaller than max_elems");
     $estimate = undef;
 }
@@ -43,7 +40,6 @@ my $estimate;
         }
     }
     $estimate = $sut->estimate();
-    is(ref($estimate), "SCALAR", "return approximate number when the number of elements is greater than max_elems");
     my $diff = $estimate - 997;
     my $error_rate = abs($diff / 997.0);
     cmp_ok($error_rate, '<', 0.1);
