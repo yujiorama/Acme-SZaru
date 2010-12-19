@@ -72,11 +72,11 @@ foreach my $i ((0..9)) {
     my $exact_index = 30 - $i - 1;
     $tops->[$i]->{value} =~ m/test(\d*)/;
     my $diff = abs($exact_index - int($1));
-    ok($diff < 3, "diff should less than 3");
+    cmp_ok($diff, '<', 3);
     my $exact_weight = 2 * ($exact_index ** 2);
     $diff = $tops->[$i]->{weight} - $exact_weight;
     my $error = abs($diff / $exact_weight);
-    ok($error < 0.1, "error should less than 0.1");
+    cmp_ok($error, '<', 0.1);
 }
 
 done_testing();
