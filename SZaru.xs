@@ -45,6 +45,28 @@ public:
   }
 };
 
+class QuantileEstimator {
+private:
+  SZaru::QuantileEstimator<int32_t> *impl_;
+  
+public:
+  QuantileEstimator(int32_t num_quantiles) :
+      impl_(SZaru::QuantileEstimator<int32_t>::Create(num_quantiles)) {
+  }
+
+  ~QuantileEstimator() {
+    delete impl_;
+  }
+  
+  void add_elem(int32_t elem) {
+    impl_->AddElem(elem);
+  }
+
+  void estimate_impl(vector<int32_t> &quantiles) {
+    impl_->Estimate(quantiles);
+  }
+};
+
 MODULE = Acme::SZaru		PACKAGE = Acme::SZaru::TopEstimator
 
 PROTOTYPES: ENABLE
@@ -76,6 +98,38 @@ PPCODE:
         hv_store(h, "value",  5, newSVpv(it->value.c_str(), it->value.size()), 0);
         hv_store(h, "weight", 6, newSVuv(it->weight), 0);
         av_push(ar, newRV_inc((SV*)h));
+        it++;
+    }
+
+    ST(0) = sv_2mortal(newRV_inc((SV*)ar));
+    XSRETURN(1);
+}
+
+MODULE = Acme::SZaru		PACKAGE = Acme::SZaru::QuantileEstimator
+
+PROTOTYPES: ENABLE
+
+QuantileEstimator *
+QuantileEstimator::new(int num_quantiles)
+
+void
+QuantileEstimator::DESTROY()
+
+void
+QuantileEstimator::add_elem(int32_t elem)
+
+SV *
+QuantileEstimator::estimate()
+PPCODE:
+{
+    AV* ar;
+    ar = (AV*)sv_2mortal((SV*)newAV());
+
+    std::vector<int32_t> e;
+    THIS->estimate_impl(e);
+    std::vector<int32_t>::iterator it = e.begin();
+    while (it != e.end()) {
+        av_push(ar, newRV_inc(newSVuv(*it)));
         it++;
     }
 

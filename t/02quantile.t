@@ -39,6 +39,7 @@ my $estimate;
 }
 
 {
+    use List::Util;
     $sut = Acme::SZaru::QuantileEstimator->new(11);
     foreach my $i (List::Util::shuffle (0..999)) {
         $sut->add_elem($i);
@@ -52,3 +53,5 @@ my $estimate;
         cmp_ok($diff, '<', 10);
     }
 }
+
+done_testing();
