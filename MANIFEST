@@ -6,5 +6,7 @@ README
 SZaru.xs
 t/Acme-SZaru.t
 t/01top.t
+t/02quantile.t
+t/03unique.t
 lib/Acme/SZaru.pm
 lib/Acme/typemap
