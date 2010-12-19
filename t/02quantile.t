@@ -17,7 +17,7 @@ my $estimate;
 }
 
 {
-    $sut = Acme::SZaru::QuantileEstimator->new(10);
+    $sut = Acme::SZaru::QuantileEstimator->new(0);
     $sut->add_elem(10);
     $sut->add_elem(7);
     $estimate = $sut->estimate();
@@ -33,8 +33,20 @@ my $estimate;
     $estimate = $sut->estimate();
     my @expected  = (0,0,1,1,2,2,3,3,4,4);
     is(ref($estimate), "ARRAY", "return exact quantile when the number of elements is small than quantile_elems");
-    is(scalar @{$estimate}, 8, "return exact quantile when the number of elements is small than quantile_elems");
+    is(scalar @{$estimate}, 10, "return exact quantile when the number of elements is small than quantile_elems");
     is_deeply($estimate, [0,0,1,1,2,2,3,3,4,4], "return exact quantile when the number of elements is small than quantile_elems");
+    $estimate = undef;
+}
+
+{
+    $sut = Acme::SZaru::QuantileEstimator->new(10);
+    $sut->add_elem($_) foreach ((0..4));
+    $estimate = $sut->estimate();
+    $estimate = $sut->estimate();
+    my @expected  = (0,0,1,1,2,2,3,3,4,4);
+    is(ref($estimate), "ARRAY", "return same result when calling estimate twice");
+    is(scalar @{$estimate}, 10, "return same result when calling estimate twice");
+    is_deeply($estimate, [0,0,1,1,2,2,3,3,4,4], "return same result when calling estimate twice");
     $estimate = undef;
 }
 
@@ -49,7 +61,7 @@ my $estimate;
     is(scalar @{$estimate}, 11, "return approximate number when the number of elements is greater than quantile_elems");
     for (my $index = 0; $index < scalar @{$estimate}; ++$index) {
         my $exact = $index * 100;
-        my $diff = abs($estimate->[$index] - $index);
+        my $diff = abs($estimate->[$index] - $exact);
         cmp_ok($diff, '<', 10);
     }
 }
